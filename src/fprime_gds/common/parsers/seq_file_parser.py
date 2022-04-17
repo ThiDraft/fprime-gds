@@ -6,7 +6,8 @@ from fprime_gds.common.models.common.command import Descriptor
 
 
 class SeqFileParser:
-    def parse(self, filename, cont=False):
+    @staticmethod
+    def parse(filename, cont=False):
         """
         Generator that parses an input sequence file and returns a tuple
         for each valid line of the sequence file.
