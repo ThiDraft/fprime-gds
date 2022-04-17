@@ -29,7 +29,6 @@ class StdioTheif(object):
         """ Entry overwrite """
         sys.stdout = self
         sys.stderr = self
-        return None
 
     def __exit__(self, *_):
         """ No worries here """
