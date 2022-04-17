@@ -54,7 +54,7 @@ export class SiblingSet {
      */
     __syncFromPrime(sibling) {
         let prime = this.prime();
-        if (sibling == null || prime == null || prime === sibling) {
+        if (sibling === null || prime === null || prime === sibling) {
             return;
         }
         syncSibling(this.prime(), sibling);
@@ -67,7 +67,7 @@ export class SiblingSet {
      */
     __syncToAll(leader) {
         let syncing_function = syncSibling.bind(undefined, leader);
-        if (leader == null) {
+        if (leader === null) {
             return;
         }
         this._siblings.filter((item) => {return item !== leader}).map(syncing_function);
