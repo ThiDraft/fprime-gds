@@ -157,7 +157,7 @@ class APITestCases(unittest.TestCase):
     def get_severity_event(self, severity="DIAGNOSTIC"):
         name = "Severity" + severity
         temp = self.pipeline.dictionaries.event_name[name]
-        event = EventData(tuple(), TimeType(), temp)
+        event = EventData((), TimeType(), temp)
         return event
 
     def get_severity_sequence(self, length, severity="DIAGNOSTIC"):

@@ -59,7 +59,7 @@ class PythonLoader(dict_loader.DictLoader):
         module_dicts = []
         for module in modules:
             # Create a dictionary for this module's fields
-            mod_dict = dict()
+            mod_dict = {}
             for field in dir(module):
                 # Verify it is not a hidden field (doesn't start with "__")
                 if field.find("__") != 0:

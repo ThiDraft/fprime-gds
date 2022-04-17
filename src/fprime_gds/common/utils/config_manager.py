@@ -69,7 +69,7 @@ class ConfigManager(configparser.ConfigParser):
         configparser.ConfigParser.__init__(self)
 
         # Set default properties
-        self.__prop = dict()
+        self.__prop = {}
         self._set_defaults()
         self.file_path = None
 
@@ -156,7 +156,7 @@ class ConfigManager(configparser.ConfigParser):
         ########################## TYPES ###########################
         # These configs give the types of fields in the binary data
 
-        self.__prop["types"] = dict()
+        self.__prop["types"] = {}
 
         self.__prop["types"]["msg_len"] = "U32"
         self.__prop["types"]["msg_desc"] = "U32"
@@ -170,7 +170,7 @@ class ConfigManager(configparser.ConfigParser):
         ######################### COLORS ###########################
         # Colors are hex codes in BGR format
 
-        self.__prop["colors"] = dict()
+        self.__prop["colors"] = {}
 
         self.__prop["colors"]["warning_lo"] = "0x00BCED"
         self.__prop["colors"]["warning_hi"] = "0x0073E5"
@@ -182,7 +182,7 @@ class ConfigManager(configparser.ConfigParser):
 
         self._set_section_defaults("colors")
 
-        self.__prop["framing"] = dict()
+        self.__prop["framing"] = {}
         self.__prop["framing"]["use_key"] = "False"
         self.__prop["framing"]["key_val"] = "0x0"
         self._set_section_defaults("framing")

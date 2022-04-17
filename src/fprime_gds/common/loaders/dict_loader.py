@@ -40,7 +40,7 @@ class DictLoader:
         Returns:
             An initialized loader object
         """
-        self.saved_dicts = dict()
+        self.saved_dicts = {}
 
     def get_id_dict(self, path):
         """
@@ -107,4 +107,4 @@ class DictLoader:
             for both should be data_template classes. This base class only
             returns empty dictionaries.
         """
-        return dict(), dict()
+        return {}, {}
