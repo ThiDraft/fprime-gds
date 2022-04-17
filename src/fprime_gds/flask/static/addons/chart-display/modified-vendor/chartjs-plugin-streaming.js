@@ -303,11 +303,7 @@ function zoomRealTimeScale(scale, zoom, center, limits) {
   const newDuration = clamp(duration * (2 - zoom), minDuration, maxDuration);
   let maxPercent, newDelay;
   storeOriginalScaleOptions(chart);
-  if (scale.isHorizontal()) {
-    maxPercent = (scale.right - center.x) / (scale.right - scale.left);
-  } else {
-    maxPercent = (scale.bottom - center.y) / (scale.bottom - scale.top);
-  }
+  maxPercent = scale.isHorizontal() ? (scale.right - center.x) / (scale.right - scale.left) : (scale.bottom - center.y) / (scale.bottom - scale.top);
   newDelay = delay + maxPercent * (duration - newDuration);
   realtimeOpts.duration = newDuration;
   realtimeOpts.delay = clamp(newDelay, minDelay, maxDelay);

@@ -65,11 +65,7 @@ function flatten(target, opts) {
 
             if (supportedTypes.indexOf(value) !== -1) {
                 let keyId = "";
-                if (prefix) {
-                    keyId = keyId.concat(prefix, delimiter, newKey);
-                } else {
-                    keyId = newKey;
-                }
+                keyId = prefix ? keyId.concat(prefix, delimiter, newKey) : newKey;
                 output[keyId] = value;
             }
         });
