@@ -114,7 +114,7 @@ class APITestCases(unittest.TestCase):
         for item in items:
             if timestep:
                 time.sleep(timestep)
-            if isinstance(item, ChData) or isinstance(item, EventData):
+            if isinstance(item, (ChData, EventData)):
                 if item.time == 0:
                     item.time = self.t0 + time.time()
             callback(item)
