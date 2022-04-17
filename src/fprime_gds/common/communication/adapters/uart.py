@@ -182,7 +182,7 @@ class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
                     args["baud"], SerialAdapter.BAUDS
                 )
             )
-        if not int(baud) in SerialAdapter.BAUDS:
+        if int(baud) not in SerialAdapter.BAUDS:
             raise ValueError(
                 "Serial baud rate '{}' not supported. Use one of: {}".format(
                     baud, SerialAdapter.BAUDS
