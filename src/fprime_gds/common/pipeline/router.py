@@ -20,12 +20,6 @@ class OutgoingRouter(
     the data returns for sending handshakes back to the originating object.
     """
 
-    def __init__(self):
-        """
-        Construct the outgoing router with a dictionary to map IDs
-        """
-        super().__init__()
-
     def data_callback(self, data, sender=None):
         """
         Handles incoming data by stamping on a handshake token to be passed back in the handshake packet. This reads
