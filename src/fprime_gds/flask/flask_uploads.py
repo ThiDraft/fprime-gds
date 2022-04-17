@@ -24,7 +24,6 @@ import os.path
 import posixpath
 
 from flask import current_app, send_from_directory, abort, url_for
-from itertools import chain # lgtm [py/unused-import]
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 
