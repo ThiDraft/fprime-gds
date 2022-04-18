@@ -165,7 +165,7 @@ class FpFramerDeframer(FramerDeframer):
                 data = data[1:]
                 continue
             # If the pool is large enough to read the whole frame, then read it
-            elif len(data) >= total_size:
+            if len(data) >= total_size:
                 deframed, check = struct.unpack_from(
                     ">{}sI".format(data_size), data, FpFramerDeframer.HEADER_SIZE
                 )
