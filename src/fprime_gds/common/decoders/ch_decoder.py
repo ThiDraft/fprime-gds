@@ -81,9 +81,8 @@ class ChDecoder(Decoder):
             val_obj = self.decode_ch_val(data, ptr, ch_temp)
 
             return ChData(val_obj, ch_time, ch_temp)
-        else:
-            print("Channel decode error: id %d not in dictionary" % ch_id)
-            return None
+        print("Channel decode error: id %d not in dictionary" % ch_id)
+        return None
 
     @staticmethod
     def decode_ch_val(val_data, offset, template):

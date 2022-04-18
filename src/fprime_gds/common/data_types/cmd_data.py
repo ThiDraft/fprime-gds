@@ -144,7 +144,7 @@ class CmdData(sys_data.SysData):
 
         if verbose and csv:
             return "%s,%s,%s,%d,%s" % (time_str, raw_time_str, name, self.id, arg_str)
-        elif verbose and not csv:
+        if verbose and not csv:
             return "%s: %s (%d) %s : %s" % (
                 time_str,
                 name,
@@ -152,10 +152,9 @@ class CmdData(sys_data.SysData):
                 raw_time_str,
                 arg_str,
             )
-        elif not verbose and csv:
+        if not verbose and csv:
             return "{},{},{}".format(time_str, name, arg_str)
-        else:
-            return "{}: {} : {}".format(time_str, name, arg_str)
+        return "{}: {} : {}".format(time_str, name, arg_str)
 
     @staticmethod
     def convert_arg_value(arg_val, arg_type):
@@ -203,8 +202,7 @@ class CmdData(sys_data.SysData):
 
         if len(self.args) > 0:
             return arg_info + arg_str
-        else:
-            return arg_info
+        return arg_info
 
 
 class CommandArgumentException(Exception):

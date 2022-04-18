@@ -365,8 +365,7 @@ class UploadSet(object):
         if base is None:
             return url_for('_uploads.uploaded_file', setname=self.name,
                            filename=filename, _external=True)
-        else:
-            return base + filename
+        return base + filename
 
     def path(self, filename, folder=None):
         """
@@ -456,8 +455,7 @@ class UploadSet(object):
         storage.save(target)
         if folder:
             return posixpath.join(folder, basename)
-        else:
-            return basename
+        return basename
 
     def resolve_conflict(self, target_folder, basename):
         """

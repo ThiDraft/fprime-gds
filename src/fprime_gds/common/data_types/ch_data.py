@@ -78,8 +78,7 @@ class ChData(sys_data.SysData):
         """
         if self.val_obj is None:
             return None
-        else:
-            return self.val_obj.val
+        return self.val_obj.val
 
     def get_val_obj(self):
         """
@@ -105,8 +104,7 @@ class ChData(sys_data.SysData):
         """
         if verbose:
             return "Time,Raw Time,Name,ID,Value\n"
-        else:
-            return "Time,Name,Value\n"
+        return "Time,Name,Value\n"
 
     def get_str(self, time_zone=None, verbose=False, csv=False):
         """
@@ -141,7 +139,7 @@ class ChData(sys_data.SysData):
                 self.id,
                 ch_val,
             )
-        elif verbose and not csv:
+        if verbose and not csv:
             return "%s: %s (%d) %s %s" % (
                 time_str_nice,
                 ch_name,
@@ -149,10 +147,9 @@ class ChData(sys_data.SysData):
                 raw_time_str,
                 ch_val,
             )
-        elif not verbose and csv:
+        if not verbose and csv:
             return "{},{},{}".format(time_str_nice, ch_name, ch_val)
-        else:
-            return "{}: {} = {}".format(time_str_nice, ch_name, ch_val)
+        return "{}: {} = {}".format(time_str_nice, ch_name, ch_val)
 
     def get_val_str(self):
 
@@ -162,10 +159,9 @@ class ChData(sys_data.SysData):
         fmt_str = self.template.get_format_str()
         if self.val_obj is None:
             return ""
-        elif fmt_str:
+        if fmt_str:
             return fmt_str % (self.val_obj.val)
-        else:
-            return str(self.val_obj.val)
+        return str(self.val_obj.val)
 
     def __str__(self):
         """

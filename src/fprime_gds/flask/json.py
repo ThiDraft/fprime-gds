@@ -26,10 +26,10 @@ class GDSJsonEncoder(flask.json.JSONEncoder):
         if hasattr(obj, "to_jsonable"):
             return obj.to_jsonable()
         # Dictionaries are "iterable", must handle them first
-        elif isinstance(obj, collections.abc.Mapping):
+        if isinstance(obj, collections.abc.Mapping):
             return flask.json.JSONEncoder.default(self, obj)
         # Enumerations, just return the list of values
-        elif isinstance(obj, enum.Enum):
+        if isinstance(obj, enum.Enum):
             enum_dict = {"value": str(obj), "values": {}}
             for enum_val in type(obj):
                 enum_dict["values"][str(enum_val)] = enum_val.value

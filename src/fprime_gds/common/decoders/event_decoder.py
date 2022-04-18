@@ -80,9 +80,8 @@ class EventDecoder(decoder.Decoder):
             arg_vals = self.decode_args(data, ptr, event_temp)
 
             return event_data.EventData(arg_vals, event_time, event_temp)
-        else:
-            print("Event decode error: id %d not in dictionary" % event_id)
-            return None
+        print("Event decode error: id %d not in dictionary" % event_id)
+        return None
 
     @staticmethod
     def decode_args(arg_data, offset, template):
