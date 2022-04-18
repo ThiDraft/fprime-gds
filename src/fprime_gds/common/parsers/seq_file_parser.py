@@ -6,7 +6,8 @@ from fprime_gds.common.models.common.command import Descriptor
 
 
 class SeqFileParser:
-    def parse(self, filename, cont=False):
+    @staticmethod
+    def parse(filename, cont=False):
         """
         Generator that parses an input sequence file and returns a tuple
         for each valid line of the sequence file.
@@ -85,23 +86,22 @@ class SeqFileParser:
                 ):
                     return arg[1:-1]
                 # If the string contains a "." assume that it is a float:
-                elif "." in arg:
+                if "." in arg:
                     return float(arg)
                 elif arg in ("True", "true", "TRUE"):
                     return True
                 elif arg in ("False", "false", "FALSE"):
                     return False
-                else:
+                try:
+                    # See if it translates to an integer:
+                    return int(arg, 0)
+                except ValueError:
                     try:
-                        # See if it translates to an integer:
-                        return int(arg, 0)
+                        # See if it translates to a float:
+                        return float(arg)
                     except ValueError:
-                        try:
-                            # See if it translates to a float:
-                            return float(arg)
-                        except ValueError:
-                            # Otherwise it is an enum type:
-                            return str(arg)
+                        # Otherwise it is an enum type:
+                        return str(arg)
 
             return list(map(parseArg, args))
 
@@ -207,28 +207,27 @@ class SeqFileParser:
                                     "Each line must contain a minimum of two fields, time and command mnemonic\n",
                                 )
                             )
-                        else:
+                        try:
+                            descriptor, seconds, useconds = parseTime(i, line[0])
+                        except:
+                            raise gseExceptions.GseControllerParsingException(
+                                "Line %d: %s"
+                                % (i + 1, "Encountered syntax error parsing timestamp")
+                            )
+                        mnemonic = line[1]
+                        args = []
+                        if length > 2:
+                            args = line[2:]
                             try:
-                                descriptor, seconds, useconds = parseTime(i, line[0])
+                                args = parseArgs(args)
                             except:
                                 raise gseExceptions.GseControllerParsingException(
                                     "Line %d: %s"
-                                    % (i + 1, "Encountered syntax error parsing timestamp")
-                                )
-                            mnemonic = line[1]
-                            args = []
-                            if length > 2:
-                                args = line[2:]
-                                try:
-                                    args = parseArgs(args)
-                                except:
-                                    raise gseExceptions.GseControllerParsingException(
-                                        "Line %d: %s"
-                                        % (
-                                            i + 1,
-                                            "Encountered syntax error parsing arguments",
-                                        )
+                                    % (
+                                        i + 1,
+                                        "Encountered syntax error parsing arguments",
                                     )
+                                )
                         yield i, descriptor, seconds, useconds, mnemonic, args
                 except gseExceptions.GseControllerParsingException as exc:
                     if not cont:

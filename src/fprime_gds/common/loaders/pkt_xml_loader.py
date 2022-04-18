@@ -98,8 +98,8 @@ class PktXmlLoader(XmlLoader):
                 % (self.PKT_LIST_TAG, packet_list.tag)
             )
 
-        id_dict = dict()
-        name_dict = dict()
+        id_dict = {}
+        name_dict = {}
 
         for packet in packet_list:
             # check if this is actually a packet, and not something to ignore

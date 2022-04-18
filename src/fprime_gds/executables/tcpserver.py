@@ -83,20 +83,18 @@ class ThreadedTCPRequestHandler(socketserver.StreamRequestHandler):
         if not data:
             print("Client exited.")
             return
+        # Process the data into the cmdQueue
+        self.getCmds(data)
 
+        # Process the cmdQueue
+        self.processQueue()
+
+        if self.registered:
+            print("Registration complete waiting for message.")
+            self.getNewMsg()
         else:
-            # Process the data into the cmdQueue
-            self.getCmds(data)
-
-            # Process the cmdQueue
-            self.processQueue()
-
-            if self.registered:
-                print("Registration complete waiting for message.")
-                self.getNewMsg()
-            else:
-                print("Unable to register client.")
-                return
+            print("Unable to register client.")
+            return
 
         LOCK.acquire()
         del SERVER.dest_obj[self.name]
@@ -180,7 +178,7 @@ class ThreadedTCPRequestHandler(socketserver.StreamRequestHandler):
             if not header:
                 break
 
-            elif header == b"Quit":
+            if header == b"Quit":
                 LOCK.acquire()
                 print("Quit received!")
                 SERVER.dest_obj[self.name].put(struct.pack(">I", 0xA5A5A5A5))
@@ -245,13 +243,12 @@ class ThreadedTCPRequestHandler(socketserver.StreamRequestHandler):
             return header
         if header == b"List\n":
             return b"List"
-        elif header == b"Quit\n":
+        if header == b"Quit\n":
             return b"Quit"
-        elif header[:-1] == b"A5A5":
+        if header[:-1] == b"A5A5":
             header2 = self.recv(4)
             return header + header2
-        else:
-            return
+        return
 
     def readData(self, header):
         """
@@ -262,7 +259,7 @@ class ThreadedTCPRequestHandler(socketserver.StreamRequestHandler):
         data = b""
         if header == b"List":
             return b""
-        elif header == b"Quit":
+        if header == b"Quit":
             return b""
         dst = header.split(b" ")[1].strip(b" ")
         if dst == b"FSW":
@@ -315,7 +312,7 @@ class ThreadedTCPRequestHandler(socketserver.StreamRequestHandler):
             for dest_elem in dest_list:
                 # print "Locking TCP"
                 LOCK.acquire()
-                if dest_elem in list(SERVER.dest_obj.keys()):
+                if dest_elem in list(SERVER.dest_obj):
                     # Send the message here....
                     # print "Sending TCP msg to ", dest_elem
 
@@ -375,7 +372,8 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         # Process and send the packet of the message here...
         self.processNewPkt(header, data)
 
-    def readHeader(self, packet):
+    @staticmethod
+    def readHeader(packet):
         """
         Read the 9 byte header (e.g. "A5A5 GUI " or "A5A5 FSW "),
         or just read the "List\n" command.
@@ -385,7 +383,8 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         packet = packet[9:]
         return (header + header2, packet)
 
-    def readData(self, header, packet):
+    @staticmethod
+    def readData(header, packet):
         """
         Read the data part of the message sent to either GUI or FSW.
         GUI receives telemetry.
@@ -400,7 +399,8 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
 
         return data
 
-    def processNewPkt(self, header, data):
+    @staticmethod
+    def processNewPkt(header, data):
         """
         Process a single command here header and data here.
         The command must always start with A5A5 except if it is a List.
@@ -420,7 +420,7 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
                 print("dest? %s" % dst.decode(DATA_ENCODING))
             for dest_elem in dest_list:
                 LOCK.acquire()
-                if dest_elem in list(SERVER.dest_obj.keys()):
+                if dest_elem in list(SERVER.dest_obj):
                     # Send the message here....
                     # print "Sending UDP msg to ", dest_elem
 
@@ -438,7 +438,7 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     socket id's for writing to destinations.
     """
 
-    dest_obj = dict()
+    dest_obj = {}
     lock_obj = threading.Lock()
 
 

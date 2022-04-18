@@ -324,18 +324,16 @@ class IntegrationTestAPI(DataHandler):
             cmd_dict = self.pipeline.dictionaries.command_name
             if command in cmd_dict:
                 return cmd_dict[command].get_id()
-            else:
-                msg = "The command mnemonic, {}, wasn't in the dictionary".format(
-                    command
-                )
-                raise KeyError(msg)
+            msg = "The command mnemonic, {}, wasn't in the dictionary".format(
+                command
+            )
+            raise KeyError(msg)
         else:
             cmd_dict = self.pipeline.dictionaries.command_id
             if command in cmd_dict:
                 return command
-            else:
-                msg = "The command id, {}, wasn't in the dictionary".format(command)
-                raise KeyError(msg)
+            msg = "The command id, {}, wasn't in the dictionary".format(command)
+            raise KeyError(msg)
 
     def send_command(self, command, args=None):
         """
@@ -377,8 +375,7 @@ class IntegrationTestAPI(DataHandler):
         self.send_command(command, args)
         if isinstance(channels, list):
             return self.await_telemetry_sequence(channels, start=start, timeout=timeout)
-        else:
-            return self.await_telemetry(channels, start=start, timeout=timeout)
+        return self.await_telemetry(channels, start=start, timeout=timeout)
 
     def send_and_await_event(self, command, args=None, events=None, timeout=5):
         """
@@ -405,8 +402,7 @@ class IntegrationTestAPI(DataHandler):
         self.send_command(command, args)
         if isinstance(events, list):
             return self.await_event_sequence(events, start=start, timeout=timeout)
-        else:
-            return self.await_event(events, start=start, timeout=timeout)
+        return self.await_event(events, start=start, timeout=timeout)
 
     ######################################################################################
     #   Command Asserts
@@ -438,8 +434,7 @@ class IntegrationTestAPI(DataHandler):
             return self.assert_telemetry_sequence(
                 channels, start=start, timeout=timeout
             )
-        else:
-            return self.assert_telemetry(channels, start=start, timeout=timeout)
+        return self.assert_telemetry(channels, start=start, timeout=timeout)
 
     def send_and_assert_event(self, command, args=None, events=None, timeout=5):
         """
@@ -465,8 +460,7 @@ class IntegrationTestAPI(DataHandler):
         self.send_command(command, args)
         if isinstance(events, list):
             return self.assert_event_sequence(events, start=start, timeout=timeout)
-        else:
-            return self.assert_event(events, start=start, timeout=timeout)
+        return self.assert_event(events, start=start, timeout=timeout)
 
     ######################################################################################
     #   Telemetry Functions
@@ -486,20 +480,18 @@ class IntegrationTestAPI(DataHandler):
             ch_dict = self.pipeline.dictionaries.channel_name
             if channel in ch_dict:
                 return ch_dict[channel].get_id()
-            else:
-                msg = "The telemetry mnemonic, {}, wasn't in the dictionary".format(
-                    channel
-                )
-                raise KeyError(msg)
+            msg = "The telemetry mnemonic, {}, wasn't in the dictionary".format(
+                channel
+            )
+            raise KeyError(msg)
         else:
             ch_dict = self.pipeline.dictionaries.channel_id
             if channel in ch_dict:
                 return channel
-            else:
-                msg = "The telemetry mnemonic, {}, wasn't in the dictionary".format(
-                    channel
-                )
-                raise KeyError(msg)
+            msg = "The telemetry mnemonic, {}, wasn't in the dictionary".format(
+                channel
+            )
+            raise KeyError(msg)
 
     def get_telemetry_pred(self, channel=None, value=None, time_pred=None):
         """
@@ -713,16 +705,14 @@ class IntegrationTestAPI(DataHandler):
             event_dict = self.pipeline.dictionaries.event_name
             if event in event_dict:
                 return event_dict[event].get_id()
-            else:
-                msg = "The event mnemonic, {}, wasn't in the dictionary".format(event)
-                raise KeyError(msg)
+            msg = "The event mnemonic, {}, wasn't in the dictionary".format(event)
+            raise KeyError(msg)
         else:
             event_dict = self.pipeline.dictionaries.event_id
             if event in event_dict:
                 return event
-            else:
-                msg = "The event id, {}, wasn't in the dictionary".format(event)
-                raise KeyError(msg)
+            msg = "The event id, {}, wasn't in the dictionary".format(event)
+            raise KeyError(msg)
 
     def get_event_pred(self, event=None, args=None, severity=None, time_pred=None):
         """
@@ -1087,10 +1077,7 @@ class IntegrationTestAPI(DataHandler):
                 self.log(msg, TestLogger.YELLOW)
 
             def search_current_history(self, items):
-                for item in items:
-                    if self.incremental_search(item):
-                        return True
-                return False
+                return any(self.incremental_search(item) for item in items)
 
             def incremental_search(self, item):
                 if self.search_pred(item):
@@ -1279,14 +1266,13 @@ class IntegrationTestAPI(DataHandler):
             if not expect:
                 assert True, pred_msg
             return True
+        ast_msg = name + " failed: {}\nassert ".format(msg) + pred_msg
+        if not expect:
+            self.__log(ast_msg, TestLogger.RED)
+            assert False, pred_msg
         else:
-            ast_msg = name + " failed: {}\nassert ".format(msg) + pred_msg
-            if not expect:
-                self.__log(ast_msg, TestLogger.RED)
-                assert False, pred_msg
-            else:
-                self.__log(ast_msg, TestLogger.ORANGE)
-            return False
+            self.__log(ast_msg, TestLogger.ORANGE)
+        return False
 
     def data_callback(self, data, sender=None):
         """

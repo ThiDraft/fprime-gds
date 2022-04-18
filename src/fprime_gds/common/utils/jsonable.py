@@ -34,8 +34,8 @@ def fprime_to_jsonable(obj):
             # If there is a property named "args" it needs to be handled specifically unless an incoming command
             if (
                 getter == "get_args"
-                and not "fprime_gds.common.data_types.cmd_data.CmdData"
-                in str(type(obj))
+                and "fprime_gds.common.data_types.cmd_data.CmdData"
+                not in str(type(obj))
             ):
                 args = []
                 for arg_spec in item:

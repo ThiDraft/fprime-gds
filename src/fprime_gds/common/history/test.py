@@ -150,5 +150,4 @@ class TestHistory(History):
             while index < self.size() and not start(self.objects[index]):
                 index += 1
             return index
-        else:
-            return start
+        return start

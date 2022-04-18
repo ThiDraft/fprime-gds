@@ -228,7 +228,7 @@ class CommParser(ParserBase):
             action="store",
             type=str,
             help="Setup the checksum algorithm. [default: %(default)s]",
-            choices=[item for item in fprime_gds.common.communication.checksum.CHECKSUM_MAPPING.keys() if item != "default"],
+            choices=[item for item in fprime_gds.common.communication.checksum.CHECKSUM_MAPPING if item != "default"],
             default=fprime_gds.common.communication.checksum.CHECKSUM_SELECTION,
         )
         return parser

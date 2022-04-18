@@ -94,9 +94,9 @@ class XmlLoader(dict_loader.DictLoader):
 
         # These dicts hold already parsed enum objects so things don't need
         # to be parsed multiple times
-        self.enums = dict()
-        self.serializable_types = dict()
-        self.array_types = dict()
+        self.enums = {}
+        self.serializable_types = {}
+        self.array_types = {}
 
     @staticmethod
     def get_xml_tree(path):
@@ -226,7 +226,7 @@ class XmlLoader(dict_loader.DictLoader):
             # Check enum name
             if enum.get(self.ENUM_TYPE_TAG) == enum_name:
                 # Go through all possible values of the enum
-                members = dict()
+                members = {}
                 for item in enum:
                     item_name = item.get(self.ENUM_ELEM_NAME_TAG)
                     item_val = int(item.get(self.ENUM_ELEM_VAL_TAG))
@@ -362,53 +362,52 @@ class XmlLoader(dict_loader.DictLoader):
 
         if type_name == "I8":
             return I8Type()
-        elif type_name == "I16":
+        if type_name == "I16":
             return I16Type()
-        elif type_name == "I32":
+        if type_name == "I32":
             return I32Type()
-        elif type_name == "I64":
+        if type_name == "I64":
             return I64Type()
-        elif type_name == "U8":
+        if type_name == "U8":
             return U8Type()
-        elif type_name == "U16":
+        if type_name == "U16":
             return U16Type()
-        elif type_name == "U32":
+        if type_name == "U32":
             return U32Type()
-        elif type_name == "U64":
+        if type_name == "U64":
             return U64Type()
-        elif type_name == "F32":
+        if type_name == "F32":
             return F32Type()
-        elif type_name == "F64":
+        if type_name == "F64":
             return F64Type()
-        elif type_name == "bool":
+        if type_name == "bool":
             return BoolType()
-        elif type_name == "string":
+        if type_name == "string":
             if self.STR_LEN_TAG not in xml_item.attrib:
                 print(
                     "Trying to parse string type, but found %s field" % self.STR_LEN_TAG
                 )
                 return None
             return StringType(max_string_len=int(xml_item.get(self.STR_LEN_TAG), 0))
-        else:
-            # First try Serialized types:
-            result = self.get_serializable_type(type_name, xml_tree)
-            if result is not None:
-                return result
+        # First try Serialized types:
+        result = self.get_serializable_type(type_name, xml_tree)
+        if result is not None:
+            return result
 
-            # Now try enums:
-            result = self.get_enum_type(type_name, xml_tree)
-            if result is not None:
-                return result
+        # Now try enums:
+        result = self.get_enum_type(type_name, xml_tree)
+        if result is not None:
+            return result
 
-            # Now try arrays:
-            result = self.get_array_type(type_name, xml_tree)
-            if result is not None:
-                return result
+        # Now try arrays:
+        result = self.get_array_type(type_name, xml_tree)
+        if result is not None:
+            return result
 
-            # Abandon all hope
-            raise exceptions.GseControllerParsingException(
-                "Could not find type %s" % type_name
-            )
+        # Abandon all hope
+        raise exceptions.GseControllerParsingException(
+            "Could not find type %s" % type_name
+        )
 
 
 class UnsupportedDictionaryVersionException(Exception):

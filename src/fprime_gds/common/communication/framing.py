@@ -165,7 +165,7 @@ class FpFramerDeframer(FramerDeframer):
                 data = data[1:]
                 continue
             # If the pool is large enough to read the whole frame, then read it
-            elif len(data) >= total_size:
+            if len(data) >= total_size:
                 deframed, check = struct.unpack_from(
                     ">{}sI".format(data_size), data, FpFramerDeframer.HEADER_SIZE
                 )
@@ -175,9 +175,8 @@ class FpFramerDeframer(FramerDeframer):
                 ):
                     data = data[total_size:]
                     return deframed, data
-                else:
-                    print("[WARNING] Checksum validation failed. Have you correctly set '--comm-checksum-type'",
-                          file=sys.stderr)
+                print("[WARNING] Checksum validation failed. Have you correctly set '--comm-checksum-type'",
+                      file=sys.stderr)
                 # Bad checksum, rotate 1 and keep looking for non-garbage
                 data = data[1:]
                 continue
