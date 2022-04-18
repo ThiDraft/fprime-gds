@@ -133,7 +133,7 @@ Vue.component("chart-display", {
          */
         destroy() {
             // Guard against destroying that which is destroyed
-            if (this.chart == null) {
+            if (this.chart === null) {
                 return;
             }
             _datastore.deregisterChannelConsumer(this);
@@ -158,7 +158,7 @@ Vue.component("chart-display", {
          * @param channels: new set of channels (unfiltered)
          */
         sendChannels(channels) {
-            if (this.selected == null || this.chart == null) {
+            if (this.selected === null || this.chart === null) {
                 return;
             }
             // Get channel name assuming the string is in component.channel format.
