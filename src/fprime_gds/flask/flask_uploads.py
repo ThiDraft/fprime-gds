@@ -405,7 +405,8 @@ class UploadSet(object):
         return ((ext in self.config.allow) or
                 (ext in self.extensions and ext not in self.config.deny))
 
-    def get_basename(self, filename):
+    @staticmethod
+    def get_basename(filename):
         return lowercase_ext(secure_filename(filename))
 
     def save(self, storage, folder=None, name=None):
@@ -457,7 +458,8 @@ class UploadSet(object):
             return posixpath.join(folder, basename)
         return basename
 
-    def resolve_conflict(self, target_folder, basename):
+    @staticmethod
+    def resolve_conflict(target_folder, basename):
         """
         If a file with the selected name already exists in the target folder,
         this method is called to resolve the conflict. It should return a new

@@ -91,7 +91,8 @@ class DictLoader:
 
         return name_dict
 
-    def construct_dicts(self, path):
+    @staticmethod
+    def construct_dicts(path):
         """
         Constructs and returns python dictionaries keyed on id and name.
 
