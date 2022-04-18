@@ -51,8 +51,8 @@ class EventXmlLoader(XmlLoader):
                 "Xml dict did not have a %s section" % self.EVENT_SECT
             )
 
-        id_dict = dict()
-        name_dict = dict()
+        id_dict = {}
+        name_dict = {}
 
         for event in event_section:
             event_dict = event.attrib

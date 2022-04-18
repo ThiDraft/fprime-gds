@@ -49,8 +49,8 @@ class CmdXmlLoader(XmlLoader):
                 "Xml dict did not have a %s section" % self.EVENT_SECT
             )
 
-        id_dict = dict()
-        name_dict = dict()
+        id_dict = {}
+        name_dict = {}
 
         for cmd in cmd_section:
             cmd_dict = cmd.attrib

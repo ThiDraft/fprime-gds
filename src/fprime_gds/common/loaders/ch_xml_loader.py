@@ -57,8 +57,8 @@ class ChXmlLoader(XmlLoader):
                 "Xml dict did not have a %s section" % self.CH_SECT
             )
 
-        id_dict = dict()
-        name_dict = dict()
+        id_dict = {}
+        name_dict = {}
         for ch in ch_section:
             ch_dict = ch.attrib
 
