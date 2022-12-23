@@ -32,7 +32,7 @@ class EventHistory(HistoryResourceBase):
             event,
             "display_text",
             format_string_template(
-                event.template.format_str, tuple([arg.val for arg in event.args])
+                event.template.format_str, tuple(arg.val for arg in event.args)
             ),
         )
         return event

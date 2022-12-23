@@ -146,8 +146,7 @@ class APITestCases(unittest.TestCase):
     def get_severity_event(self, severity="DIAGNOSTIC"):
         name = f"apiTester.Severity{severity}"
         temp = self.pipeline.dictionaries.event_name[name]
-        event = EventData(tuple(), TimeType(), temp)
-        return event
+        return EventData(tuple(), TimeType(), temp)
 
     def get_severity_sequence(self, length, severity="DIAGNOSTIC"):
         return [self.get_severity_event(severity) for _ in range(length)]
@@ -779,7 +778,7 @@ class APITestCases(unittest.TestCase):
             self.api.assert_telemetry("Counter", 8, start="NOW", timeout=1)
             raise self.AssertionFailure()
         except AssertionError:
-            assert True, "api raised the correct error"
+            pass
         except self.AssertionFailure:
             assert False, "api failed to raise an assertion error"
 
@@ -790,7 +789,7 @@ class APITestCases(unittest.TestCase):
             self.api.assert_telemetry("Counter", 15, timeout=1)
             raise self.AssertionFailure()
         except AssertionError:
-            assert True, "api raised the correct error"
+            pass
         except self.AssertionFailure:
             assert False, "api failed to raise an assertion error"
 
@@ -813,7 +812,7 @@ class APITestCases(unittest.TestCase):
             self.api.assert_telemetry_sequence(search_seq, start="NOW", timeout=5)
             raise self.AssertionFailure()
         except AssertionError:
-            assert True, "api raised the correct error"
+            pass
         except self.AssertionFailure:
             assert False, "api failed to raise an assertion error"
 
@@ -825,7 +824,7 @@ class APITestCases(unittest.TestCase):
             self.api.assert_telemetry_sequence(search_seq, start="NOW", timeout=1)
             raise self.AssertionFailure()
         except AssertionError:
-            assert True, "api raised the correct error"
+            pass
         except self.AssertionFailure:
             assert False, "api failed to raise an assertion error"
 
@@ -853,7 +852,7 @@ class APITestCases(unittest.TestCase):
             self.api.assert_telemetry_count(100)
             raise self.AssertionFailure()
         except AssertionError:
-            assert True, "api raised the correct error"
+            pass
         except self.AssertionFailure:
             assert False, "api failed to raise an assertion error"
 
@@ -865,7 +864,7 @@ class APITestCases(unittest.TestCase):
             self.api.assert_telemetry_count(100, timeout=1)
             raise self.AssertionFailure()
         except AssertionError:
-            assert True, "api raised the correct error"
+            pass
         except self.AssertionFailure:
             assert False, "api failed to raise an assertion error"
 

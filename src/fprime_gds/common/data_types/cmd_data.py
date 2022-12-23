@@ -132,11 +132,11 @@ class CmdData(sys_data.SysData):
 
             arg_str = " ".join(str(arg_val_list))
 
-        if verbose and csv:
-            return f"{time_str},{raw_time_str},{name},{self.id},{arg_str}"
-        if verbose and not csv:
+        if verbose:
+            if csv:
+                return f"{time_str},{raw_time_str},{name},{self.id},{arg_str}"
             return f"{time_str}: {name} ({self.id}) {raw_time_str} : {arg_str}"
-        if not verbose and csv:
+        if csv:
             return f"{time_str},{name},{arg_str}"
         return f"{time_str}: {name} : {arg_str}"
 

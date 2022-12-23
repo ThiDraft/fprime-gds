@@ -28,7 +28,6 @@ class PredicateTestCases(unittest.TestCase):
         try:
             pred.__str__()
             print(pred)
-            assert True, f"predicate provides string summary: {str(pred)}"
         except NotImplementedError:
             assert False, "invoking str(pred) was not supported"
 
@@ -69,7 +68,6 @@ class PredicateTestCases(unittest.TestCase):
             str(pred)
         except NotImplementedError:
             assert False, "invoking __str__ on an complete subclass of predicate failed"
-        assert True, "implemented predicate had no problems invoking functions"
 
     @staticmethod
     def test_is_predicate():

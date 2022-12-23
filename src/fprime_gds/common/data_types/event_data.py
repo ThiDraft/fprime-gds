@@ -104,11 +104,11 @@ class EventData(sys_data.SysData):
 
             arg_str = format_string_template(format_str, tuple(arg_val_list))
 
-        if verbose and csv:
-            return f"{time_str},{raw_time_str},{name},{self.id},{severity},{arg_str}"
-        if verbose and not csv:
+        if verbose:
+            if csv:
+                return f"{time_str},{raw_time_str},{name},{self.id},{severity},{arg_str}"
             return f"{time_str}: {name} ({self.id}) {raw_time_str} {severity} : {arg_str}"
-        if not verbose and csv:
+        if csv:
             return f"{time_str},{name},{severity},{arg_str}"
         return f"{time_str}: {name} {severity} : {arg_str}"
 

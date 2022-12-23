@@ -419,7 +419,7 @@ class IntegrationTestAPI(DataHandler):
         cmd_id = self.translate_command_name(command)
         dispatch = [self.get_event_pred("cmdDisp.OpCodeDispatched", [cmd_id, None])]
         complete = [self.get_event_pred("cmdDisp.OpCodeCompleted", [cmd_id])]
-        events = dispatch + (events if events else []) + complete
+        events = dispatch + (events or []) + complete
         results = self.send_and_assert_event(command, args, events, timeout=timeout)
         if max_delay is not None:
             delay = results[1].get_time() - results[0].get_time()
@@ -1264,8 +1264,6 @@ class IntegrationTestAPI(DataHandler):
         if predicate(value):
             ast_msg = f"{name} succeeded: {msg}\nassert {pred_msg}"
             self.__log(ast_msg, TestLogger.GREEN)
-            if not expect:
-                assert True, pred_msg
             return True
         ast_msg = f"{name} failed: {msg}\nassert {pred_msg}"
         if not expect:

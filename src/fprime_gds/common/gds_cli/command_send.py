@@ -35,8 +35,7 @@ class CommandSendCommand(QueryHistoryCommand):
         :return: A list of the closest matching commands (potentially empty)
         """
         known_commands = project_dictionary.command_name.keys()
-        closest_matches = difflib.get_close_matches(command_name, known_commands, n=num)
-        return closest_matches
+        return difflib.get_close_matches(command_name, known_commands, n=num)
 
     @staticmethod
     def get_command_template(
@@ -159,10 +158,9 @@ class CommandSendCommand(QueryHistoryCommand):
             api.send_command(command_name, arguments)
         except KeyError:
             cls._log(f"{command_name} is not a known command")
-            close_matches = CommandSendCommand.get_closest_commands(
+            if close_matches := CommandSendCommand.get_closest_commands(
                 pipeline.dictionaries, command_name
-            )
-            if close_matches:
+            ):
                 cls._log(f"Similar known commands: {close_matches}")
         except NotInitializedException:
             temp = CommandSendCommand.get_command_template(

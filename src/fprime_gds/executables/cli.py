@@ -61,7 +61,7 @@ class ParserBase(ABC):
     @property
     def description(self):
         """ Return parser description """
-        return self.DESCRIPTION if self.DESCRIPTION else "Unknown command line parser"
+        return self.DESCRIPTION or "Unknown command line parser"
 
     @abstractmethod
     def get_arguments(self) -> Dict[Tuple[str, ...], Dict[str, Any]]:
@@ -114,7 +114,11 @@ class ParserBase(ABC):
                 return [best_flag]
             elif action != "store" or value is None:
                 return []
-            return [best_flag] + ([str(value)] if not isinstance(value, list) else [str(item) for item in value])
+            return [best_flag] + (
+                [str(item) for item in value]
+                if isinstance(value, list)
+                else [str(value)]
+            )
 
         cli_pairs = [cli_arguments(flags, argparse_ins) for flags, argparse_ins in self.get_arguments().items()]
         return list(itertools.chain.from_iterable(cli_pairs))
@@ -220,13 +224,13 @@ class CompositeParser(ParserBase):
     @property
     def description(self):
         """ Return parser description """
-        return self.given if self.given else ",".join(item.description for item in self.constituents)
+        return self.given or ",".join(item.description for item in self.constituents)
 
     def get_arguments(self) -> Dict[Tuple[str, ...], Dict[str, Any]]:
         """ Get the argument from all constituents """
         arguments = {}
         for constituent in self.constituents:
-            arguments.update(constituent.get_arguments())
+            arguments |= constituent.get_arguments()
         return arguments
 
     def handle_arguments(self, args, **kwargs):
@@ -253,14 +257,14 @@ class CommAdapterParser(ParserBase):
             if not callable(adapter_arguments_callable):
                 print(f"[WARNING] '{name}' does not have 'get_arguments' method, skipping.", file=sys.stderr)
                 continue
-            adapter_arguments.update(adapter.get_arguments())
+            adapter_arguments |= adapter.get_arguments()
         com_arguments = {
             ("--comm-adapter",): {
                 "dest": "adapter",
                 "action": "store",
                 "type": str,
                 "help": "Adapter for communicating to flight deployment. [default: %(default)s]",
-                "choices": ["none"] + [name for name in adapter_definition_dictionaries.keys()],
+                "choices": ["none"] + list(adapter_definition_dictionaries.keys()),
                 "default": "ip",
             },
             ("--comm-checksum-type",): {
@@ -274,7 +278,7 @@ class CommAdapterParser(ParserBase):
                     if item != "default"
                 ],
                 "default": fprime_gds.common.communication.checksum.CHECKSUM_SELECTION,
-            }
+            },
         }
         return {**adapter_arguments, **com_arguments}
 
@@ -403,7 +407,7 @@ class MiddleWareParser(ParserBase):
                 "default": "0.0.0.0",
             }
         }
-        return {**zmq_arguments, **tts_arguments}
+        return zmq_arguments | tts_arguments
 
     def handle_arguments(self, args, **kwargs):
         """
@@ -506,7 +510,7 @@ class StandardPipelineParser(CompositeParser):
             "packet_spec": args_ns.packet_spec,
             "logging_prefix": args_ns.logs,
         }
-        pipeline = pipeline if pipeline else StandardPipeline()
+        pipeline = pipeline or StandardPipeline()
         pipeline.transport_implementation = args_ns.connection_transport
         try:
             pipeline.setup(**pipeline_arguments)
