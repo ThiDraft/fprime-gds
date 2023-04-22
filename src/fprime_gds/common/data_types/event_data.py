@@ -39,8 +39,12 @@ class EventData(sys_data.SysData):
         self.args = event_args
         self.time = event_time
         self.template = event_temp
-        self.display_text = event_temp.description if event_args is None else format_string_template(
-            event_temp.format_str, tuple([arg.val for arg in event_args])
+        self.display_text = (
+            event_temp.description
+            if event_args is None
+            else format_string_template(
+                event_temp.format_str, tuple(arg.val for arg in event_args)
+            )
         )
 
     def get_args(self):
@@ -105,13 +109,13 @@ class EventData(sys_data.SysData):
         severity = self.template.get_severity()
         display_text = self.display_text
 
-        if verbose and csv:
-            return (
-                f"{time_str},{raw_time_str},{name},{self.id},{severity},{display_text}"
-            )
-        if verbose and not csv:
+        if verbose:
+            if csv:
+                return (
+                    f"{time_str},{raw_time_str},{name},{self.id},{severity},{display_text}"
+                )
             return f"{time_str}: {name} ({self.id}) {raw_time_str} {severity} : {display_text}"
-        if not verbose and csv:
+        if csv:
             return f"{time_str},{name},{severity},{display_text}"
         return f"{time_str}: {name} {severity} : {display_text}"
 

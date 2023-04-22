@@ -38,12 +38,11 @@ class ChannelsCommand(QueryHistoryCommand):
             channels
         :return: List of channels that passed the filter
         """
-        channel_list = test_api_utils.get_item_list(
+        return test_api_utils.get_item_list(
             item_dictionary=project_dictionary.channel_id,
             search_filter=filter_predicate,
             template_to_data=ChData.get_empty_obj,
         )
-        return channel_list
 
     @classmethod
     def _get_upcoming_item(

@@ -126,5 +126,3 @@ class EventTemplate(data_template.DataTemplate):
         return self.args
 
 
-if __name__ == "__main__":
-    pass

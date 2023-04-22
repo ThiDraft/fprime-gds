@@ -166,11 +166,10 @@ class ChannelsSubparserInjector(CliSubparserInjectorBase):
         """
         Creates the channels sub-command as a subparser, and then returns it
         """
-        channels_parser = parent_parser.add_parser(
+        return parent_parser.add_parser(
             "channels",
             description="print out new telemetry data that has been received from the F Prime instance, sorted by timestamp",
         )
-        return channels_parser
 
     @classmethod
     def add_arguments(cls, parser: argparse.ArgumentParser):
@@ -204,11 +203,10 @@ class CommandSubparserInjector(CliSubparserInjectorBase):
         """
         Creates the command-send sub-command as a subparser, and then returns it
         """
-        command_send_parser = parent_parser.add_parser(
+        return parent_parser.add_parser(
             "command-send",
             description="sends the given command to the spacecraft via the GDS",
         )
-        return command_send_parser
 
     @staticmethod
     def complete_command_name(
@@ -292,11 +290,10 @@ class EventsSubparserInjector(CliSubparserInjectorBase):
         """
         Creates the events sub-command as a subparser, and then returns it
         """
-        events_parser = parent_parser.add_parser(
+        return parent_parser.add_parser(
             "events",
             description="print out new events that have occurred on the F Prime instance, sorted by timestamp",
         )
-        return events_parser
 
     @classmethod
     def add_arguments(cls, parser: argparse.ArgumentParser):

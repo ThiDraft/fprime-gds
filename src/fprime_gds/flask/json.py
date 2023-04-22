@@ -38,7 +38,7 @@ def jsonify_base_type(input_type: Type[BaseType]) -> dict:
     assert issubclass(input_type, BaseType), "Failure to properly encode data"
     members = getmembers(input_type, lambda value: not isroutine(value) and not isinstance(value, property))
     jsonable_dict = {name: value for name, value in members if not name.startswith("_")}
-    jsonable_dict.update({"name": input_type.__name__})
+    jsonable_dict["name"] = input_type.__name__
     return jsonable_dict
 
 

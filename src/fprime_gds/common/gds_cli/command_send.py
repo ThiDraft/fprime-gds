@@ -37,8 +37,7 @@ class CommandSendCommand(BaseCommand):
         :return: A list of the closest matching commands (potentially empty)
         """
         known_commands = project_dictionary.command_name.keys()
-        closest_matches = difflib.get_close_matches(command_name, known_commands, n=num)
-        return closest_matches
+        return difflib.get_close_matches(command_name, known_commands, n=num)
 
     @staticmethod
     def _get_command_template(
@@ -130,8 +129,7 @@ class CommandSendCommand(BaseCommand):
             len(item.get_args()),
         )
 
-        cmd_description = item.get_description()
-        if cmd_description:
+        if cmd_description := item.get_description():
             cmd_string += f"Description: {(cmd_description)}\n" 
 
         for arg in item.get_args():
@@ -159,10 +157,9 @@ class CommandSendCommand(BaseCommand):
             api.send_command(command, arguments)
         except KeyError:
             cls._log(f"{command} is not a known command")
-            close_matches = cls._get_closest_commands(
+            if close_matches := cls._get_closest_commands(
                 api.pipeline.dictionaries, command
-            )
-            if close_matches:
+            ):
                 cls._log(f"Similar known commands: {close_matches}")
         except NotInitializedException:
             temp = cls._get_command_template(api.pipeline.dictionaries, command)

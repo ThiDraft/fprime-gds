@@ -48,25 +48,24 @@ def generateSequence(inputFile, outputFile, dictionary, timebase, cont=False):
 
     # Check for files
     if not os.path.isfile(inputFile):
-        raise SeqGenException("Can't open file '" + inputFile + "'. ")
+        raise SeqGenException(f"Can't open file '{inputFile}'. ")
 
     if not os.path.isfile(dictionary):
-        raise SeqGenException("Can't open file '" + dictionary + "'. ")
+        raise SeqGenException(f"Can't open file '{dictionary}'. ")
 
     # Check the user environment:
     cmd_xml_dict = CmdXmlLoader()
     try:
         (cmd_id_dict, cmd_name_dict, versions) = cmd_xml_dict.construct_dicts(dictionary)
     except gseExceptions.GseControllerUndefinedFileException:
-        raise SeqGenException("Can't open file '" + dictionary + "'. ")
+        raise SeqGenException(f"Can't open file '{dictionary}'. ")
 
-    # Parse the input file:
-    command_list = []
     file_parser = SeqFileParser()
 
     parsed_seq = file_parser.parse(inputFile, cont=cont)
 
     messages = []
+    command_list = []
     try:
         for i, descriptor, seconds, useconds, mnemonic, args in parsed_seq:
             try:
@@ -75,9 +74,7 @@ def generateSequence(inputFile, outputFile, dictionary, timebase, cont=False):
                         "Line %d: %s"
                         % (
                             i + 1,
-                            "'"
-                            + mnemonic
-                            + "' does not match any command in the command dictionary.",
+                            f"'{mnemonic}' does not match any command in the command dictionary.",
                         )
                     )
                 # Set the command arguments:
@@ -104,7 +101,7 @@ def generateSequence(inputFile, outputFile, dictionary, timebase, cont=False):
         writer.open(outputFile)
     except:
         raise SeqGenException(
-            "Encountered problem opening output file '" + outputFile + "'."
+            f"Encountered problem opening output file '{outputFile}'."
         )
 
     writer.write(command_list)

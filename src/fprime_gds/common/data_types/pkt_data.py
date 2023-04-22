@@ -87,7 +87,7 @@ class PktData(SysData):
                 self.template.get_id(),
                 str(self.time),
             )
-        elif not csv and not verbose:
+        elif not csv:
             pkt_str += f"{self.time.to_readable(time_zone)}: {self.template.get_name()} {{\n"
 
         for i, ch in enumerate(self.chs):

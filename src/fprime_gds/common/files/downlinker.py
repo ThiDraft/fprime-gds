@@ -97,8 +97,7 @@ class FileDownlinker(fprime_gds.common.handlers.DataHandler):
         )
         self.active.open(TransmitFileState.WRITE)
         LOGGER.addHandler(self.active.log_handler)
-        message = "Received START packet with metadata:\n"
-        message += "\tSize: %d\n"
+        message = "Received START packet with metadata:\n" + "\tSize: %d\n"
         message += "\tSource: %s\n"
         message += "\tDestination: %s"
         LOGGER.info(message, size, source_path, dest_path)
