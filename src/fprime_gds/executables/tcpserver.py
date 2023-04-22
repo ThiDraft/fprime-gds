@@ -383,9 +383,7 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         # Read telemetry data here...
         tlm_packet_size = packet[:4]
         size = struct.unpack(">I", tlm_packet_size)[0]
-        data = tlm_packet_size + packet[4 : 4 + size]
-
-        return data
+        return tlm_packet_size + packet[4 : 4 + size]
 
     def processNewPkt(self, header, data):
         """

@@ -92,8 +92,7 @@ class Event:
                 vals.append("ERR")
             offset = offset + arg_obj.getSize()
 
-        vals = [0] + vals
-        return vals
+        return [0] + vals
 
     def stringify(self, event_args_list):
         """

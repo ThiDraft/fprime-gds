@@ -92,6 +92,4 @@ class EventEncoder(Encoder):
         self.len_obj.val = len_val
         len_bin = self.len_obj.serialize()
 
-        binary_data = len_bin + desc_bin + id_bin + time_bin + arg_bin
-
-        return binary_data
+        return len_bin + desc_bin + id_bin + time_bin + arg_bin

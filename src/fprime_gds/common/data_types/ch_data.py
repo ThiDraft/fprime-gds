@@ -63,13 +63,15 @@ class ChData(sys_data.SysData):
         # in which case we just display the description
         if val_obj is None:
             return template.ch_desc
-        temp_val = val_obj.val if not isinstance(val_obj, (SerializableType, ArrayType)) else val_obj.formatted_val
+        temp_val = (
+            val_obj.formatted_val
+            if isinstance(val_obj, (SerializableType, ArrayType))
+            else val_obj.val
+        )
         fmt_str = template.get_format_str()
         if temp_val is None:
             return ""
-        if fmt_str:
-            return format_string_template(fmt_str, (temp_val,))
-        return temp_val
+        return format_string_template(fmt_str, (temp_val,)) if fmt_str else temp_val
 
     def set_pkt(self, pkt):
         """
@@ -166,13 +168,13 @@ class ChData(sys_data.SysData):
         ch_name = self.template.get_full_name()
         display_text = self.get_display_text()
 
-        if verbose and csv:
-            return f"{time_str_nice},{raw_time_str},{ch_name},{self.id},{display_text}"
-        if verbose and not csv:
+        if verbose:
+            if csv:
+                return f"{time_str_nice},{raw_time_str},{ch_name},{self.id},{display_text}"
             return (
                 f"{time_str_nice}: {ch_name} ({self.id}) {raw_time_str} {display_text}"
             )
-        if not verbose and csv:
+        if csv:
             return f"{time_str_nice},{ch_name},{display_text}"
         return f"{time_str_nice}: {ch_name} = {display_text}"
 

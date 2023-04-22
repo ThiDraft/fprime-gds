@@ -37,12 +37,11 @@ class EventsCommand(QueryHistoryCommand):
         :param filter_predicate: Test API predicate used to filter shown events
         :return: List of EventData items that passed the filter
         """
-        event_list = test_api_utils.get_item_list(
+        return test_api_utils.get_item_list(
             item_dictionary=project_dictionary.event_id,
             search_filter=filter_predicate,
             template_to_data=EventData.get_empty_obj,
         )
-        return event_list
 
     @classmethod
     def _get_upcoming_item(

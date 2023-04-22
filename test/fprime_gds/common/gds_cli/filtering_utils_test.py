@@ -28,8 +28,7 @@ def sample_template():
 
 @pytest.fixture
 def sample_event(sample_template):
-    event = EventData([], time_type.TimeType(), sample_template)
-    return event
+    return EventData([], time_type.TimeType(), sample_template)
 
 
 # A set of valid input filters that should accept the sample event

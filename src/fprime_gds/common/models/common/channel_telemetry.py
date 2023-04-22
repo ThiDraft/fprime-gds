@@ -169,6 +169,5 @@ class Channel:
 
     @changed.setter
     def changed(self, ch):
-        if not ch == False or not ch == True:
-            ch = True
+        ch = True
         self.__changed = ch

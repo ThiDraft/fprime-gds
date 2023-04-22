@@ -124,9 +124,9 @@ class ParserBase(ABC):
             elif action != "store" or value is None:
                 return []
             return [best_flag] + (
-                [str(value)]
-                if not isinstance(value, list)
-                else [str(item) for item in value]
+                [str(item) for item in value]
+                if isinstance(value, list)
+                else [str(value)]
             )
 
         cli_pairs = [
@@ -256,7 +256,7 @@ class CompositeParser(ParserBase):
         """Get the argument from all constituents"""
         arguments = {}
         for constituent in self.constituents:
-            arguments.update(constituent.get_arguments())
+            arguments |= constituent.get_arguments()
         return arguments
 
     def handle_arguments(self, args, **kwargs):
@@ -287,15 +287,16 @@ class CommAdapterParser(ParserBase):
                     file=sys.stderr,
                 )
                 continue
-            adapter_arguments.update(adapter.get_arguments())
+            adapter_arguments |= adapter.get_arguments()
         com_arguments = {
             ("--comm-adapter",): {
                 "dest": "adapter",
                 "action": "store",
                 "type": str,
                 "help": "Adapter for communicating to flight deployment. [default: %(default)s]",
-                "choices": ["none"]
-                + [name for name in adapter_definition_dictionaries.keys()],
+                "choices": (
+                    ["none"] + list(adapter_definition_dictionaries.keys())
+                ),
                 "default": "ip",
             },
             ("--comm-checksum-type",): {
@@ -442,7 +443,7 @@ class MiddleWareParser(ParserBase):
                 "default": "0.0.0.0",
             },
         }
-        return {**zmq_arguments, **tts_arguments}
+        return zmq_arguments | tts_arguments
 
     def handle_arguments(self, args, **kwargs):
         """
@@ -754,7 +755,7 @@ class RetrievalArgumentsParser(ParserBase):
                 "dest": "json",
                 "action": "store_true",
                 "required": False,
-                "help": f"returns response in JSON format",
+                "help": "returns response in JSON format",
             },
         }
 

@@ -1264,8 +1264,6 @@ class IntegrationTestAPI(DataHandler):
         if predicate(value):
             ast_msg = f"{name} succeeded: {msg}\nassert {pred_msg}"
             self.__log(ast_msg, TestLogger.GREEN)
-            if not expect:
-                assert True, pred_msg
             return True
         ast_msg = f"{name} failed: {msg}\nassert {pred_msg}"
         if not expect:

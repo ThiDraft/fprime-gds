@@ -102,6 +102,4 @@ class CmdEncoder(encoder.Encoder):
         self.len_obj.val = length_val
         length = self.len_obj.serialize()
 
-        binary_data = desc + length + descriptor + op_code + arg_data
-
-        return binary_data
+        return desc + length + descriptor + op_code + arg_data
